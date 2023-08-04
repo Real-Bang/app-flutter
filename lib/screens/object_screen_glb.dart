@@ -17,27 +17,40 @@ class _ObjectScreenGlbState extends State<ObjectScreenGlb> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text(
-            "Realbang",
-            style: TextStyle(
-              fontSize: 24,
-            ),
-          ),
-          elevation: 2,
-        ),
-        body: InteractiveViewer(
+        body: Stack(
+      children: [
+        InteractiveViewer(
           child: const ModelViewer(
             backgroundColor: Color.fromARGB(0xFF, 0xEE, 0xEE, 0xEE),
             src: 'assets/object/ground.glb',
             alt: 'A 3D model of an astronaut',
-            ar: true,
             autoPlay: false,
             autoRotate: false,
             disableZoom: false,
-            cameraTarget: "10m 10m 10m",
-            cameraOrbit: "50deg 75deg 1.5m",
+            cameraTarget: "0m 0m -0.5m",
+            cameraOrbit: "0deg 180deg 1.5m",
           ),
-        ));
+        ),
+        Container(
+          margin: const EdgeInsets.symmetric(vertical: 40, horizontal: 15),
+          decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(45),
+              boxShadow: [
+                BoxShadow(
+                  blurRadius: 3,
+                  offset: const Offset(1, 1),
+                  color: Colors.black.withOpacity(0.5),
+                )
+              ]),
+          child: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: const Icon(Icons.arrow_back),
+          ),
+        ),
+      ],
+    ));
   }
 }

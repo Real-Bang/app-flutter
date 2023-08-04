@@ -2,6 +2,7 @@ class RoomDetailModel {
   final int id;
   final String type, priceType, price, description, address, detailDescription;
   final List<String> imageUrlList, options;
+  final dynamic objectLink;
   final Map<String, dynamic> infos;
 
   RoomDetailModel.fromJson(Map<String, dynamic> json)
@@ -13,6 +14,7 @@ class RoomDetailModel {
         description = json['description'],
         address = json['address'],
         infos = json['infos'],
+        objectLink = json['objectLink'],
         options = json['options'],
         detailDescription = json['detailDescription'];
 }

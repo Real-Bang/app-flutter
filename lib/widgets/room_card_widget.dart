@@ -59,13 +59,23 @@ class RoomCard extends StatelessWidget {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          room.type,
-                          style: const TextStyle(
-                            fontSize: 14,
-                            color: Color(0xFFB53D43),
-                            fontWeight: FontWeight.w600,
-                          ),
+                        Row(
+                          children: [
+                            Text(
+                              room.type,
+                              style: const TextStyle(
+                                fontSize: 14,
+                                color: Color(0xFFB53D43),
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            const SizedBox(
+                              width: 5,
+                            ),
+                            ObjectSignContainer(
+                              isObject: room.isObject,
+                            ),
+                          ],
                         ),
                         Text(
                           '${room.priceType} ${room.price}',
@@ -159,5 +169,44 @@ class RoomCard extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+class ObjectSignContainer extends StatelessWidget {
+  final bool isObject;
+
+  const ObjectSignContainer({
+    super.key,
+    required this.isObject,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    print(isObject);
+    if (isObject) {
+      return Container(
+        padding: const EdgeInsets.symmetric(vertical: 3, horizontal: 5),
+        decoration: const BoxDecoration(
+            color: Colors.blue,
+            borderRadius: BorderRadius.all(Radius.circular(20))),
+        child: const Row(
+          children: [
+            Icon(
+              Icons.view_in_ar_rounded,
+              size: 12,
+            ),
+            Text(
+              "3D",
+              style: TextStyle(
+                fontSize: 10,
+                fontWeight: FontWeight.w600,
+              ),
+            )
+          ],
+        ),
+      );
+    } else {
+      return const SizedBox();
+    }
   }
 }

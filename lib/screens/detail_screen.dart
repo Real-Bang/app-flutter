@@ -33,57 +33,38 @@ class _DetailScreenState extends State<DetailScreen> {
           children: [
             Stack(
               children: [
-                CarouselWdiget(imageUrlList: room.imageUrlList),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      margin: const EdgeInsets.symmetric(
-                          vertical: 20, horizontal: 15),
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(45),
-                          boxShadow: [
-                            BoxShadow(
-                              blurRadius: 3,
-                              offset: const Offset(1, 1),
-                              color: Colors.black.withOpacity(0.5),
-                            )
-                          ]),
-                      child: IconButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        icon: const Icon(Icons.arrow_back),
+                CarouselWidget(imageUrlList: room.imageUrlList),
+                Container(
+                  padding: const EdgeInsets.only(top: 25),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        margin: const EdgeInsets.symmetric(
+                            vertical: 20, horizontal: 15),
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(45),
+                            boxShadow: [
+                              BoxShadow(
+                                blurRadius: 3,
+                                offset: const Offset(1, 1),
+                                color: Colors.black.withOpacity(0.5),
+                              )
+                            ]),
+                        child: IconButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          icon: const Icon(Icons.arrow_back),
+                        ),
                       ),
-                    ),
-                    Container(
-                      margin: const EdgeInsets.symmetric(
-                          vertical: 20, horizontal: 15),
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(45),
-                          boxShadow: [
-                            BoxShadow(
-                              blurRadius: 3,
-                              offset: const Offset(1, 1),
-                              color: Colors.black.withOpacity(0.5),
-                            )
-                          ]),
-                      child: IconButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const ObjectScreenGlb(),
-                            ),
-                          );
-                        },
-                        icon: const Icon(Icons.view_in_ar_rounded),
+                      ObjectRenderButton(
+                        objectLink: room.objectLink,
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ],
             ),
@@ -244,6 +225,45 @@ class _DetailScreenState extends State<DetailScreen> {
   }
 }
 
+class ObjectRenderButton extends StatelessWidget {
+  final dynamic objectLink;
+  const ObjectRenderButton({
+    super.key,
+    required this.objectLink,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    if (objectLink == null) {
+      return const SizedBox();
+    }
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
+      decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(45),
+          boxShadow: [
+            BoxShadow(
+              blurRadius: 3,
+              offset: const Offset(1, 1),
+              color: Colors.black.withOpacity(0.5),
+            )
+          ]),
+      child: IconButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const ObjectScreenGlb(),
+            ),
+          );
+        },
+        icon: const Icon(Icons.view_in_ar_rounded),
+      ),
+    );
+  }
+}
+
 class OptionList extends StatelessWidget {
   OptionList({
     super.key,
@@ -382,18 +402,18 @@ class InfoBlock extends StatelessWidget {
   }
 }
 
-class CarouselWdiget extends StatefulWidget {
+class CarouselWidget extends StatefulWidget {
   final List<String> imageUrlList;
-  const CarouselWdiget({
+  const CarouselWidget({
     super.key,
     required this.imageUrlList,
   });
 
   @override
-  State<CarouselWdiget> createState() => _CarouselWdigetState();
+  State<CarouselWidget> createState() => _CarouselWidgetState();
 }
 
-class _CarouselWdigetState extends State<CarouselWdiget> {
+class _CarouselWidgetState extends State<CarouselWidget> {
   int _current = 0;
   final CarouselController _controller = CarouselController();
   late List<Widget> imageSliders;
@@ -408,6 +428,7 @@ class _CarouselWdigetState extends State<CarouselWdiget> {
                   item,
                   fit: BoxFit.cover,
                   width: 1500,
+                  height: 1000,
                 ),
               ],
             )))
