@@ -1,5 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:model_viewer_plus/model_viewer_plus.dart';
 import 'package:realbang_app/models/room_detail_model.dart';
 import 'package:realbang_app/screens/object_screen_glb.dart';
 import 'package:realbang_app/services/api_services.dart';
@@ -33,7 +34,10 @@ class _DetailScreenState extends State<DetailScreen> {
           children: [
             Stack(
               children: [
-                CarouselWidget(imageUrlList: room.imageUrlList),
+                CarouselWidget(
+                  imageUrlList: room.imageUrlList,
+                  objectLink: room.objectLink,
+                ),
                 Container(
                   padding: const EdgeInsets.only(top: 25),
                   child: Row(
@@ -404,9 +408,11 @@ class InfoBlock extends StatelessWidget {
 
 class CarouselWidget extends StatefulWidget {
   final List<String> imageUrlList;
+  final dynamic objectLink;
   const CarouselWidget({
     super.key,
     required this.imageUrlList,
+    required this.objectLink,
   });
 
   @override
@@ -433,6 +439,26 @@ class _CarouselWidgetState extends State<CarouselWidget> {
               ],
             )))
         .toList();
+
+    if (widget.objectLink != null) {
+      imageSliders.insert(
+        0,
+        ClipRRect(
+          child: InteractiveViewer(
+            child: const ModelViewer(
+              backgroundColor: Color.fromARGB(0xFF, 0xEE, 0xEE, 0xEE),
+              src: 'assets/object/ground.glb',
+              alt: 'A 3D model of an astronaut',
+              autoPlay: false,
+              autoRotate: false,
+              disableZoom: false,
+              cameraTarget: "0m 0m -0.5m",
+              cameraOrbit: "0deg 180deg 1.5m",
+            ),
+          ),
+        ),
+      );
+    }
     super.initState();
   }
 
@@ -458,7 +484,7 @@ class _CarouselWidgetState extends State<CarouselWidget> {
             alignment: AlignmentDirectional.bottomEnd,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: widget.imageUrlList.asMap().entries.map((entry) {
+              children: imageSliders.asMap().entries.map((entry) {
                 return GestureDetector(
                   onTap: () => _controller.animateToPage(entry.key),
                   child: Container(

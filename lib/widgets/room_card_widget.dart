@@ -34,17 +34,29 @@ class RoomCard extends StatelessWidget {
         ),
         child: Row(
           children: [
-            Container(
-                width: 120,
-                height: 120,
-                clipBehavior: Clip.hardEdge,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
+            Stack(
+              children: [
+                Container(
+                  width: 120,
+                  height: 120,
+                  clipBehavior: Clip.hardEdge,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Image.network(
+                    room.imageUrl,
+                    fit: BoxFit.cover,
+                  ),
                 ),
-                child: Image.network(
-                  room.imageUrl,
-                  fit: BoxFit.cover,
-                )),
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                  child: ObjectSignContainer(
+                    isObject: room.isObject,
+                  ),
+                ),
+              ],
+            ),
             const SizedBox(
               width: 10,
             ),
@@ -69,12 +81,12 @@ class RoomCard extends StatelessWidget {
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
-                            const SizedBox(
-                              width: 5,
-                            ),
-                            ObjectSignContainer(
-                              isObject: room.isObject,
-                            ),
+                            // const SizedBox(
+                            //   width: 5,
+                            // ),
+                            // ObjectSignContainer(
+                            //   isObject: room.isObject,
+                            // ),
                           ],
                         ),
                         Text(
@@ -185,24 +197,17 @@ class ObjectSignContainer extends StatelessWidget {
     print(isObject);
     if (isObject) {
       return Container(
-        padding: const EdgeInsets.symmetric(vertical: 3, horizontal: 5),
+        padding: const EdgeInsets.symmetric(vertical: 3, horizontal: 10),
         decoration: const BoxDecoration(
             color: Colors.blue,
             borderRadius: BorderRadius.all(Radius.circular(20))),
-        child: const Row(
-          children: [
-            Icon(
-              Icons.view_in_ar_rounded,
-              size: 12,
-            ),
-            Text(
-              "3D",
-              style: TextStyle(
-                fontSize: 10,
-                fontWeight: FontWeight.w600,
-              ),
-            )
-          ],
+        child: const Text(
+          "3D",
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 13,
+            fontWeight: FontWeight.w600,
+          ),
         ),
       );
     } else {
