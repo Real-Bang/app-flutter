@@ -1,9 +1,10 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:model_viewer_plus/model_viewer_plus.dart';
+import 'package:flutter/services.dart';
 import 'package:realbang_app/models/room_detail_model.dart';
-import 'package:realbang_app/screens/object_screen_glb.dart';
+import 'package:realbang_app/screens/object_screen_webview.dart';
 import 'package:realbang_app/services/api_services.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 class DetailScreen extends StatefulWidget {
   final int id;
@@ -28,6 +29,10 @@ class _DetailScreenState extends State<DetailScreen> {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent,
+    ));
+
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -40,33 +45,67 @@ class _DetailScreenState extends State<DetailScreen> {
                 ),
                 Container(
                   padding: const EdgeInsets.only(top: 25),
-                  child: Row(
+                  height: 300,
+                  child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            margin: const EdgeInsets.symmetric(
+                                vertical: 20, horizontal: 15),
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(45),
+                                boxShadow: [
+                                  BoxShadow(
+                                    blurRadius: 3,
+                                    offset: const Offset(1, 1),
+                                    color: Colors.black.withOpacity(0.5),
+                                  )
+                                ]),
+                            child: IconButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              icon: const Icon(Icons.arrow_back),
+                            ),
+                          ),
+                          // ObjectRenderButton(
+                          //   objectLink: room.objectLink,
+                          // ),
+                        ],
+                      ),
                       Container(
                         margin: const EdgeInsets.symmetric(
-                            vertical: 20, horizontal: 15),
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(45),
-                            boxShadow: [
-                              BoxShadow(
-                                blurRadius: 3,
-                                offset: const Offset(1, 1),
-                                color: Colors.black.withOpacity(0.5),
-                              )
-                            ]),
-                        child: IconButton(
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                          icon: const Icon(Icons.arrow_back),
+                          vertical: 20,
+                          horizontal: 20,
                         ),
-                      ),
-                      ObjectRenderButton(
-                        objectLink: room.objectLink,
-                      ),
+                        child: ElevatedButton.icon(
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (_) => ObjectScreenWebView(
+                                          objectLink: room.objectLink,
+                                        )));
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color(0xFFB53D43),
+                          ),
+                          icon: const Icon(
+                            Icons.view_in_ar_rounded,
+                            size: 18,
+                          ),
+                          label: const Text(
+                            'View in 3D',
+                            style: TextStyle(fontSize: 18),
+                          ),
+                        ),
+                      )
                     ],
                   ),
                 ),
@@ -106,7 +145,7 @@ class _DetailScreenState extends State<DetailScreen> {
                     ),
                   ),
                   const SizedBox(
-                    height: 5,
+                    height: 1,
                   ),
                   Text(
                     room.address,
@@ -258,7 +297,9 @@ class ObjectRenderButton extends StatelessWidget {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => const ObjectScreenGlb(),
+              builder: (context) => ObjectScreenWebView(
+                objectLink: objectLink,
+              ),
             ),
           );
         },
@@ -423,9 +464,32 @@ class _CarouselWidgetState extends State<CarouselWidget> {
   int _current = 0;
   final CarouselController _controller = CarouselController();
   late List<Widget> imageSliders;
+  late final WebViewController controller;
 
   @override
   void initState() {
+    controller = WebViewController()
+      ..setJavaScriptMode(JavaScriptMode.unrestricted)
+      ..setBackgroundColor(const Color(0x00000000))
+      ..setNavigationDelegate(
+        NavigationDelegate(
+          onProgress: (int progress) {
+            // Update loading bar.
+          },
+          onPageStarted: (String url) {},
+          onPageFinished: (String url) {},
+          onWebResourceError: (WebResourceError error) {},
+          onNavigationRequest: (NavigationRequest request) {
+            if (request.url.startsWith('https://www.youtube.com/')) {
+              return NavigationDecision.prevent;
+            }
+            return NavigationDecision.navigate;
+          },
+        ),
+      )
+      ..loadRequest(Uri.parse(
+          'http://ec2-3-37-88-108.ap-northeast-2.compute.amazonaws.com:8080/static/animate.html?scene=${widget.objectLink}'));
+
     imageSliders = widget.imageUrlList
         .map((item) => ClipRRect(
                 child: Stack(
@@ -442,22 +506,10 @@ class _CarouselWidgetState extends State<CarouselWidget> {
 
     if (widget.objectLink != null) {
       imageSliders.insert(
-        0,
-        ClipRRect(
-          child: InteractiveViewer(
-            child: const ModelViewer(
-              backgroundColor: Color.fromARGB(0xFF, 0xEE, 0xEE, 0xEE),
-              src: 'assets/object/ground.glb',
-              alt: 'A 3D model of an astronaut',
-              autoPlay: false,
-              autoRotate: false,
-              disableZoom: false,
-              cameraTarget: "0m 0m -0.5m",
-              cameraOrbit: "0deg 180deg 1.5m",
-            ),
-          ),
-        ),
-      );
+          0,
+          ClipRRect(
+            child: WebViewWidget(controller: controller),
+          ));
     }
     super.initState();
   }

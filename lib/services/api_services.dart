@@ -43,13 +43,13 @@ class ApiService {
     {
       'id': 2,
       'imageUrl':
-          'https://www.zipdeco.co.kr/upload/2019/10/28/EDITOR_201910280549536450_t3YFi',
+          'http://ec2-3-37-88-108.ap-northeast-2.compute.amazonaws.com:8080/uploads/images/room/room_1.jpg',
       'imageUrlList': [
-        'https://www.zipdeco.co.kr/upload/2019/10/28/EDITOR_201910280549536450_t3YFi',
-        'https://i.namu.wiki/i/qKxcAi_HHGm1iaFqOWf8mrp5xAPjPDTOkxTtNBy5s6qpFXrL16tWL0SiYD0Z57_tLcd_EycaAerp4WtT-rtn9Q.webp',
-        'https://cdn.ggumim.co.kr/cache/star/600/20180116113100dS4z4idEwl.jpg',
+        'http://ec2-3-37-88-108.ap-northeast-2.compute.amazonaws.com:8080/uploads/images/room/room_1.jpg',
+        'http://ec2-3-37-88-108.ap-northeast-2.compute.amazonaws.com:8080/uploads/images/room/room_2.jpg',
+        'http://ec2-3-37-88-108.ap-northeast-2.compute.amazonaws.com:8080/uploads/images/room/room_3.jpg',
       ],
-      'objectLink': 'link121212',
+      'objectLink': 'http://10.0.2.2:3000/',
       'type': '원룸',
       'priceType': '월세',
       'price': '500/50',
@@ -78,13 +78,13 @@ class ApiService {
     {
       'id': 3,
       'imageUrl':
-          'https://i.namu.wiki/i/qKxcAi_HHGm1iaFqOWf8mrp5xAPjPDTOkxTtNBy5s6qpFXrL16tWL0SiYD0Z57_tLcd_EycaAerp4WtT-rtn9Q.webp',
+          'http://ec2-3-37-88-108.ap-northeast-2.compute.amazonaws.com:8080/uploads/images/club/club_1.jpg',
       'imageUrlList': [
-        'https://i.namu.wiki/i/qKxcAi_HHGm1iaFqOWf8mrp5xAPjPDTOkxTtNBy5s6qpFXrL16tWL0SiYD0Z57_tLcd_EycaAerp4WtT-rtn9Q.webp',
-        'https://cdn.ggumim.co.kr/cache/star/600/20180116113100dS4z4idEwl.jpg',
-        'https://www.zipdeco.co.kr/upload/2019/10/28/EDITOR_201910280549536450_t3YFi',
+        'http://ec2-3-37-88-108.ap-northeast-2.compute.amazonaws.com:8080/uploads/images/club/club_1.jpg',
+        'http://ec2-3-37-88-108.ap-northeast-2.compute.amazonaws.com:8080/uploads/images/club/club_2.jpg',
+        'http://ec2-3-37-88-108.ap-northeast-2.compute.amazonaws.com:8080/uploads/images/club/club_3.jpg',
       ],
-      'objectLink': 'link12122121212',
+      'objectLink': 'http://10.0.2.2:3000/',
       'type': '원룸',
       'priceType': '월세',
       'price': '500/55',
